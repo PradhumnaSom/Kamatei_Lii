@@ -46,7 +46,7 @@ Main data files:
 ## Run locally
 
 ```bash
-cd "/Users/pradhumna/Documents/New project/kamatei_lii"
+cd "/kamatei_lii"
 flutter pub get
 flutter run
 ```
