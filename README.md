@@ -2,7 +2,7 @@
 
 A real-world app designed for a Christian community from Manipur, Kamatei Lii is built to preserve language, worship songs, and shared faith in a form that is easy to carry and use every day.
 
-At its heart, this app is not just a song finder. It reflects community memory: songs learned in fellowship, voices raised together in prayer, and the cultural identity carried through lyrics across generations. The goal is simple and meaningful: make these songs accessible offline, searchable in seconds, and readable for everyone.
+The goal is simple and meaningful: make these songs accessible offline, searchable in seconds, and readable for everyone.
 
 This project started from a practical need: make it easy to find and read songs quickly during fellowship, without depending on internet. It now includes two books in one app:
 
