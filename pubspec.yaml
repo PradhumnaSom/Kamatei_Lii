@@ -1,0 +1,36 @@
+name: kamatei_lii
+description: "Offline lyrics app for Kamatei Lii"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.8
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  sqflite: ^2.4.2
+  path: ^1.9.1
+  shared_preferences: ^2.3.2
+  crypto: ^3.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/data/songs.json
+    - assets/data/tam_kamatoi_lii.json
+    - assets/data/topic_index.json
+    - assets/images/logo.jpg
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/images/logo.jpg
