@@ -36,26 +36,49 @@ def clean_title(raw_title: str) -> str:
 
 
 def format_lyrics(lines: list[str]) -> str:
-  # Keep paragraph breaks from the PDF; these are needed to detect chorus blocks.
-  paragraphs: list[str] = []
-  current_lines: list[str] = []
+  # Preserve the PDF's lyric line layout. Titles/details are parsed separately,
+  # so this only affects the visible lyric body.
+  formatted_lines: list[str] = []
+  previous_blank = False
   for raw_line in lines:
-    line = normalize_space(raw_line)
+    line = raw_line.rstrip()
     if not line:
-      if current_lines:
-        paragraphs.append(" ".join(current_lines))
-        current_lines = []
+      if formatted_lines and not previous_blank:
+        formatted_lines.append("")
+      previous_blank = True
       continue
-    current_lines.append(line)
-  if current_lines:
-    paragraphs.append(" ".join(current_lines))
 
-  stanzas: list[str] = []
-  for paragraph in paragraphs:
-    parts = _split_inline_verses(paragraph)
-    stanzas.extend(parts if parts else [paragraph])
+    normalized_line = normalize_space(line)
+    if formatted_lines and not previous_blank:
+      if is_verse_line(normalized_line) or _starts_unnumbered_section(
+        normalized_line,
+        formatted_lines,
+      ):
+        formatted_lines.append("")
 
-  return "\n\n".join(s.strip() for s in stanzas if s.strip()).strip()
+    formatted_lines.append(line)
+    previous_blank = False
+
+  return "\n".join(formatted_lines).strip()
+
+
+def _starts_unnumbered_section(line: str, formatted_lines: list[str]) -> bool:
+  if is_verse_line(line):
+    return False
+
+  previous_line = next((l.strip() for l in reversed(formatted_lines) if l.strip()), "")
+  if not previous_line:
+    return False
+
+  # Refrains/choruses in the PDF often begin as an unnumbered line after a
+  # complete sentence, while wrapped lyric lines usually follow commas.
+  if not re.search(r"[.!?]\s*(?:[\"')\]]+)?$", previous_line):
+    return False
+
+  if re.match(r"^(S\.?P\.?|Alto:|Ten,|Tenor:|Bass:|Chorus:?|Refrain:?)\b", line, re.IGNORECASE):
+    return True
+
+  return bool(re.match(r"^[“\"'()]?[A-Z]", line))
 
 
 def _split_inline_verses(text: str) -> list[str]:
@@ -74,8 +97,7 @@ def _split_inline_verses(text: str) -> list[str]:
 
 
 def format_special_song_lyrics(lines: list[str]) -> str:
-  cleaned = [normalize_space(line) for line in lines if normalize_space(line)]
-  return "\n".join(cleaned).strip()
+  return format_lyrics(lines)
 
 
 def format_details(lines: list[str]) -> str:
