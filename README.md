@@ -67,22 +67,6 @@ python3 tools/extract_kkl_pdf.py \
 
 Then restart the app so updated data is imported.
 
-## Android release (Play Store)
-
-1. Create signing config file:
-```bash
-cp android/key.properties.example android/key.properties
-```
-
-2. Fill `android/key.properties` with real values.
-3. Build release AAB:
-```bash
-flutter build appbundle --release
-```
-
-4. Upload:
-`build/app/outputs/bundle/release/app-release.aab`
-
 ## Project layout
 
 - `lib/core` -> database, providers, models
